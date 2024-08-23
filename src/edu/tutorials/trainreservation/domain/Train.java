@@ -26,32 +26,13 @@ public class Train {
     }
 
     public boolean hasRoute(String sourceCity, String destinationCity) {
-        boolean source = false, destination = false;
-        for (City station : this.stations) {
-            if (station.getName().equals(sourceCity)) {
-                source = true;
-                break;
-            }
-        }
-        for (City station : this.stations) {
-            if (station.getName().equals(destinationCity)) {
-                destination = true;
-                break;
-            }
-        }
+        String findingSourceCity = getStationCity(sourceCity).getName();
+        String findingDestinationCity = getStationCity(destinationCity).getName();
 
-        return source && destination;
+        return findingSourceCity.equals(sourceCity) && findingDestinationCity.equals(destinationCity);
     }
 
-    public City getSource(String city) {
-        for (City station : this.stations)
-            if (station.getName().equals(city))
-                return station;
-
-        return stations.getFirst();
-    }
-
-    public City getDestination(String city) {
+    public City getStationCity(String city){
         for (City station : this.stations)
             if (station.getName().equals(city))
                 return station;
@@ -83,7 +64,6 @@ public class Train {
 
         List<Seat> reservedSeats = new ArrayList<>();
         for (int i = 0; i < passengerCount; i++) {
-
             Seat seat = availableSeats.get(i);
             seat.reserveSeat(travelDate);
 
@@ -105,19 +85,9 @@ public class Train {
     }
 
     public int getTotalDistance(String source, String destination) {
-        int destinationDistance = 0, sourceDistance = 0;
-        for (City station : this.stations) {
-            if (station.getName().equals(source)) {
-                sourceDistance = station.getDistance();
-                break;
-            }
-        }
-        for (City station : this.stations) {
-            if (station.getName().equals(destination)) {
-                destinationDistance = station.getDistance();
-                break;
-            }
-        }
+        int sourceDistance = getStationCity(source).getDistance();
+        int destinationDistance = getStationCity(destination).getDistance();
+
         return destinationDistance - sourceDistance;
     }
 }

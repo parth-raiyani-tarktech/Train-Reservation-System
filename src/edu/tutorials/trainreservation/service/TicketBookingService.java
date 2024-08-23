@@ -35,7 +35,7 @@ public class TicketBookingService {
 
         long pnr = bookedTickets.size() + 1 + 10000000;
 
-        Ticket ticket = new Ticket(pnr, selectedTrain.getTrainNumber(), selectedTrain.getSource(sourceStation), selectedTrain.getDestination(destinationStation), travelDate, totalFare, bookedSeats);
+        Ticket ticket = new Ticket(pnr, selectedTrain.getTrainNumber(), selectedTrain.getStationCity(sourceStation), selectedTrain.getStationCity(destinationStation), travelDate, totalFare, bookedSeats);
         bookedTickets.add(ticket);
 
         return ticket;
@@ -47,10 +47,12 @@ public class TicketBookingService {
 
     public List<Ticket> getBookedTicketsFromPNR(int PNR) {
         List<Ticket> bookedTicket = new ArrayList<>();
-        for (Ticket ticket : bookedTickets)
-            if (ticket.getPnr() == PNR)
+        for (Ticket ticket : bookedTickets) {
+            if (ticket.getPnr() == PNR) {
                 bookedTicket.add(ticket);
-
+                break;
+            }
+        }
         return bookedTicket;
     }
 

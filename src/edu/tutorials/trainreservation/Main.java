@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         List<Train> trains = DataReader.readTrainData();
-        displayTrainDetails(trains); // done Train is saved
+        displayTrainDetails(trains);
 
         TrainService trainService = new TrainService(trains);
         TicketBookingService ticketBookingService = new TicketBookingService(trainService);
