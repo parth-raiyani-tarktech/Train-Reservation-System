@@ -16,14 +16,17 @@ public class TrainDataParser {
     public static Train parse(String trainDetailsInput, String coachDetailsInput) {
         String[] trainDetails = trainDetailsInput.split(SPACE);
         String trainNo = trainDetails[0];
-        City source = parseCityDetails(trainDetails[1]);
-        City destination = parseCityDetails(trainDetails[2]);
+
+        List<City> Stations = new ArrayList<>();
+
+        for (int i = 1; i < trainDetails.length; i++)
+            Stations.add(parseCityDetails(trainDetails[i]));
 
         String[] coachDetails = coachDetailsInput.split(SPACE);
         coachDetails = Arrays.copyOfRange(coachDetails, 1, coachDetails.length);
         List<Coach> coaches = buildCoaches(coachDetails);
 
-        return new Train(trainNo, source, destination, coaches);
+        return new Train(trainNo, Stations, coaches);
     }
 
     private static City parseCityDetails(String cityDetails) {
@@ -42,13 +45,13 @@ public class TrainDataParser {
     }
 
     private static CoachType getCoachType(String coachName) {
-        if(coachName.startsWith("S")) {
+        if (coachName.startsWith("S")) {
             return CoachType.SLEEPER;
-        } else if(coachName.startsWith("B")) {
+        } else if (coachName.startsWith("B")) {
             return CoachType.TIER_3_AC;
-        } else if(coachName.startsWith("A")) {
+        } else if (coachName.startsWith("A")) {
             return CoachType.TIER_2_AC;
-        } else if(coachName.startsWith("H")) {
+        } else if (coachName.startsWith("H")) {
             return CoachType.TIER_1_AC;
         }
 

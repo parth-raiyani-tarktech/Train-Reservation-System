@@ -8,14 +8,12 @@ import java.util.List;
 
 public class Train {
     private final String trainNo;
-    private final City source;
-    private final City destination;
+    private final List<City> stations;
     private final List<Coach> coaches;
 
-    public Train(String trainNo, City source, City destination, List<Coach> coaches) {
+    public Train(String trainNo, List<City> stations, List<Coach> coaches) {
         this.trainNo = trainNo;
-        this.source = source;
-        this.destination = destination;
+        this.stations = stations;
         this.coaches = coaches;
     }
 
@@ -28,16 +26,18 @@ public class Train {
     }
 
     public boolean hasRoute(String sourceCity, String destinationCity) {
-        return this.source.getName().equals(sourceCity)
-                && this.destination.getName().equals(destinationCity);
+        String findingSourceCity = getStationCity(sourceCity).getName();
+        String findingDestinationCity = getStationCity(destinationCity).getName();
+
+        return findingSourceCity.equals(sourceCity) && findingDestinationCity.equals(destinationCity);
     }
 
-    public City getSource() {
-        return source;
-    }
+    public City getStationCity(String city){
+        for (City station : this.stations)
+            if (station.getName().equals(city))
+                return station;
 
-    public City getDestination() {
-        return destination;
+        return stations.getLast();
     }
 
     public boolean hasCoachType(CoachType coachType) {
@@ -56,7 +56,7 @@ public class Train {
     }
 
     public List<Seat> reserveSeats(CoachType coachType, LocalDate travelDate, int passengerCount) {
-        if(!hasAvailableSeats(coachType, travelDate, passengerCount)) {
+        if (!hasAvailableSeats(coachType, travelDate, passengerCount)) {
             throw new UnavailableSeatException("No available seats for date " + travelDate + " in coach type " + coachType + " for " + passengerCount + " passengers");
         }
 
@@ -64,7 +64,6 @@ public class Train {
 
         List<Seat> reservedSeats = new ArrayList<>();
         for (int i = 0; i < passengerCount; i++) {
-
             Seat seat = availableSeats.get(i);
             seat.reserveSeat(travelDate);
 
@@ -85,7 +84,10 @@ public class Train {
         return availableSeats;
     }
 
-    public int getTotalDistance() {
-        return destination.getDistance() - source.getDistance();
+    public int getTotalDistance(String source, String destination) {
+        int sourceDistance = getStationCity(source).getDistance();
+        int destinationDistance = getStationCity(destination).getDistance();
+
+        return destinationDistance - sourceDistance;
     }
 }

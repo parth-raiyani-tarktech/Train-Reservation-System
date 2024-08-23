@@ -24,6 +24,38 @@ public class Ticket {
         this.bookedSeats = bookedSeats;
     }
 
+    public long getPnr() {
+        return pnr;
+    }
+
+    public LocalDate getTravelDate() {
+        return travelDate;
+    }
+
+    public String getTrainNumber() {
+        return trainNumber;
+    }
+
+    public City getFrom() {
+        return from;
+    }
+
+    public City getTo() {
+        return to;
+    }
+
+    public double getTotalFare() {
+        return totalFare;
+    }
+
+    public String getBookedSeats() {
+        StringBuilder seats = new StringBuilder();
+        for (Seat s : bookedSeats)
+            seats.append(s.toString()).append(" ");
+
+        return seats.toString();
+    }
+
     public String toString() {
         return String.format(String.format("PNR: %d, Train: %s, Travel Date: %s, Total Fare: %.2f, Booked Seats: %s", pnr, trainNumber, travelDate.toString(), totalFare, Utils.toCommaSeparatedSeatNo(bookedSeats)));
     }
