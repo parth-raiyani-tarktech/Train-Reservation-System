@@ -8,24 +8,32 @@ import java.util.List;
 public class Ticket {
     private final long pnr;
     private final String trainNumber;
-    private final City from;
-    private final City to;
     private final LocalDate travelDate;
+    private final String from;
+    private final String to;
     private final double totalFare;
     private final List<Seat> bookedSeats;
 
-    public Ticket(long pnr, String trainNumber, City from, City to, LocalDate travelDate, double totalFare, List<Seat> bookedSeats) {
+    public Ticket(long pnr, String trainNumber, LocalDate travelDate, String to, String from, double totalFare,
+            List<Seat> bookedSeats) {
         this.pnr = pnr;
         this.trainNumber = trainNumber;
+        this.travelDate = travelDate;
         this.from = from;
         this.to = to;
-        this.travelDate = travelDate;
         this.totalFare = totalFare;
         this.bookedSeats = bookedSeats;
     }
 
+    public long getPnr() {
+        return pnr;
+    }
+
     public String toString() {
-        return String.format(String.format("PNR: %d, Train: %s, Travel Date: %s, Total Fare: %.2f, Booked Seats: %s", pnr, trainNumber, travelDate.toString(), totalFare, Utils.toCommaSeparatedSeatNo(bookedSeats)));
+        return String.format(String.format(
+                "PNR: %d, Train: %s, Travel Date: %s, From: %s, To: %s Total Fare: %.2f, Booked Seats: %s",
+                pnr, trainNumber, travelDate.toString(), from, to, totalFare,
+                Utils.toCommaSeparatedSeatNo(bookedSeats)));
     }
 
 }
