@@ -8,7 +8,6 @@ public enum CoachType {
 
     private final double farePerKilometer;
 
-
     CoachType(double farePerKilometer) {
         this.farePerKilometer = farePerKilometer;
     }
