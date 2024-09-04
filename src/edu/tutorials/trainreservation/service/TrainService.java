@@ -28,7 +28,8 @@ public class TrainService {
 
         List<Train> matchingTrains = new ArrayList<>();
         for (Train train : trainByNumber.values()) {
-            if (train.hasRoute(sourceCity, destinationCity) && train.hasCoachType(coachType) && train.hasAvailableSeats(coachType, travelDate, passengerCount)) {
+            if (train.hasRoute(sourceCity, destinationCity) && train.hasCoachType(coachType)
+                    && train.hasAvailableSeats(coachType, travelDate, passengerCount)) {
                 matchingTrains.add(train);
             }
         }

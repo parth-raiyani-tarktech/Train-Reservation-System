@@ -16,14 +16,25 @@ public class TrainDataParser {
     public static Train parse(String trainDetailsInput, String coachDetailsInput) {
         String[] trainDetails = trainDetailsInput.split(SPACE);
         String trainNo = trainDetails[0];
-        City source = parseCityDetails(trainDetails[1]);
-        City destination = parseCityDetails(trainDetails[2]);
+
+        String[] stationDetails = Arrays.copyOfRange(trainDetails, 1, trainDetails.length);
+        List<City> stations = getStations(stationDetails);
 
         String[] coachDetails = coachDetailsInput.split(SPACE);
         coachDetails = Arrays.copyOfRange(coachDetails, 1, coachDetails.length);
         List<Coach> coaches = buildCoaches(coachDetails);
 
-        return new Train(trainNo, source, destination, coaches);
+        return new Train(trainNo, stations, coaches);
+    }
+
+    private static List<City> getStations(String[] stationDetails) {
+        List<City> stations = new ArrayList<>();
+
+        for (String station : stationDetails) {
+            stations.add(parseCityDetails(station));
+        }
+
+        return stations;
     }
 
     private static City parseCityDetails(String cityDetails) {
@@ -42,13 +53,13 @@ public class TrainDataParser {
     }
 
     private static CoachType getCoachType(String coachName) {
-        if(coachName.startsWith("S")) {
+        if (coachName.startsWith("S")) {
             return CoachType.SLEEPER;
-        } else if(coachName.startsWith("B")) {
+        } else if (coachName.startsWith("B")) {
             return CoachType.TIER_3_AC;
-        } else if(coachName.startsWith("A")) {
+        } else if (coachName.startsWith("A")) {
             return CoachType.TIER_2_AC;
-        } else if(coachName.startsWith("H")) {
+        } else if (coachName.startsWith("H")) {
             return CoachType.TIER_1_AC;
         }
 

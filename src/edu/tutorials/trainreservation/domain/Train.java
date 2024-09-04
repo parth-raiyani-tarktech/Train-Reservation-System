@@ -8,14 +8,12 @@ import java.util.List;
 
 public class Train {
     private final String trainNo;
-    private final City source;
-    private final City destination;
+    private final List<City> stations;
     private final List<Coach> coaches;
 
-    public Train(String trainNo, City source, City destination, List<Coach> coaches) {
+    public Train(String trainNo, List<City> stations, List<Coach> coaches) {
         this.trainNo = trainNo;
-        this.source = source;
-        this.destination = destination;
+        this.stations = stations;
         this.coaches = coaches;
     }
 
@@ -28,16 +26,22 @@ public class Train {
     }
 
     public boolean hasRoute(String sourceCity, String destinationCity) {
-        return this.source.getName().equals(sourceCity)
-                && this.destination.getName().equals(destinationCity);
+        boolean hasSourceCity = false;
+        boolean hasDestinationCity = false;
+        for (City station : stations) {
+            if (station.getName().equals(sourceCity)) {
+                hasSourceCity = true;
+            }
+            if (station.getName().equals(destinationCity)) {
+                hasDestinationCity = true;
+            }
+        }
+
+        return hasSourceCity && hasDestinationCity;
     }
 
-    public City getSource() {
-        return source;
-    }
-
-    public City getDestination() {
-        return destination;
+    public List<City> getStations() {
+        return this.stations;
     }
 
     public boolean hasCoachType(CoachType coachType) {
@@ -56,8 +60,9 @@ public class Train {
     }
 
     public List<Seat> reserveSeats(CoachType coachType, LocalDate travelDate, int passengerCount) {
-        if(!hasAvailableSeats(coachType, travelDate, passengerCount)) {
-            throw new UnavailableSeatException("No available seats for date " + travelDate + " in coach type " + coachType + " for " + passengerCount + " passengers");
+        if (!hasAvailableSeats(coachType, travelDate, passengerCount)) {
+            throw new UnavailableSeatException("No available seats for date " + travelDate + " in coach type "
+                    + coachType + " for " + passengerCount + " passengers");
         }
 
         List<Seat> availableSeats = getAvailableSeats(coachType, travelDate);
@@ -85,7 +90,17 @@ public class Train {
         return availableSeats;
     }
 
-    public int getTotalDistance() {
-        return destination.getDistance() - source.getDistance();
+    public int getTotalDistance(String sourceCity, String destinationCity) {
+        int sourceCityDistance = 0;
+        int destinationCityDistance = 0;
+        for (City station : stations) {
+            if (station.getName().equals(sourceCity)) {
+                sourceCityDistance = station.getDistance();
+            }
+            if (station.getName().equals(destinationCity)) {
+                destinationCityDistance = station.getDistance();
+            }
+        }
+        return Math.abs(destinationCityDistance - sourceCityDistance);
     }
 }
