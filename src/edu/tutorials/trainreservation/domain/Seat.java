@@ -24,11 +24,11 @@ public class Seat {
     }
 
     public void reserveSeat(LocalDate travelDate) {
-        if(!isAvailableFor(travelDate)) {
+        if (!isAvailableFor(travelDate)) {
             throw new UnavailableSeatException("Seat " + seatNo + " is already reserved for the date " + travelDate);
         }
 
-        if(isAvailableFor(travelDate)) {
+        if (isAvailableFor(travelDate)) {
             reservedDates.add(travelDate);
         }
     }
